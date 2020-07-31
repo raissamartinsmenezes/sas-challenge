@@ -1,0 +1,12 @@
+{
+  "name": "sas-challenge",
+  "displayName": "sas-challenge",
+  "expo": {
+    "name": "sas-challenge",
+    "slug": "sas-challenge",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
