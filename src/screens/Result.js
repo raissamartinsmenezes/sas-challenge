@@ -7,7 +7,7 @@ const Result = ({ navigation }) => {
   return (
       <>
         <Text style={styles.title}>Result</Text>
-        <Button onClick={() => navigation.navigate('Category')} label="Voltar para Categorias"></Button>
+        <Button onClick={() => navigation.navigate('Dev Mobile')} label="Voltar para Categorias"></Button>
       </>
   );
 };

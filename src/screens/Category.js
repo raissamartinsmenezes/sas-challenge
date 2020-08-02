@@ -1,7 +1,7 @@
 import React from 'react'; 
-import { StyleSheet, Text, View, SafeAreaView, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, StatusBar, Dimensions } from 'react-native';
 
-import Header from '../components/Header'
+// import Header from '../components/Header'
 import Button from '../components/Button';
 
 const categoriesMock = [
@@ -15,11 +15,11 @@ const categoriesMock = [
 
 const Category = ({ navigation }) => {
   return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView>
           <StatusBar translucent barStyle="dark-content"/>
-          <Header title="Dev Mobile"/>
+          {/* <Header title="Dev Mobile"/> */}
           <Text style={styles.title}>Categorias</Text>
-          <View>
+          <View style={styles.buttons}>
             {categoriesMock.map((c) => (
               <Button onClick={() => navigation.navigate('Quizz')} key={c.id} label={c.category}></Button>
             ))}
@@ -29,16 +29,16 @@ const Category = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#fff'
-  },
-
   title: {
     color: '#343C58',
     fontSize: 20,
     fontWeight: 'bold',
     paddingLeft: 24,
     marginVertical: 24
+  },
+  buttons: {
+    height: Dimensions.get('window').width, 
+    justifyContent: 'space-between',
   }
 });
 

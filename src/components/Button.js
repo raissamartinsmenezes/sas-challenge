@@ -14,7 +14,6 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width - 48, 
     paddingVertical: 11,
     paddingHorizontal: 24,
-    marginBottom: 16,
     textAlign: 'center',
     alignSelf: 'center',
     color: '#78809A',
