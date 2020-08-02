@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     marginVertical: 24
   },
   buttons: {
-    height: Dimensions.get('window').width, 
+    height: Dimensions.get('window').height - 220, 
     justifyContent: 'space-between',
   }
 });
