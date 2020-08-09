@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react'; 
-import { useSelector, useDispatch } from 'react-redux';
-import { StyleSheet, Text, View, SafeAreaView, StatusBar, Dimensions } from 'react-native';
+import React, { useEffect, useState } from 'react' 
+import { useSelector, useDispatch } from 'react-redux'
+import { StyleSheet, Text, View, SafeAreaView, StatusBar, Dimensions } from 'react-native'
 
 // import Header from '../components/Header'
-import Button from '../components/Button';
+import Button from '../components/Button'
 
-import getCategories from '../service/api';
-import { changeFirstCategoryName } from '../store/slicers/categoriesSlice';
+import { changeFirstCategoryName } from '../store/slices/categoriesSlice'
 
 const Category = ({ navigation }) => {
   const categories = useSelector(state => state.categories)
@@ -23,9 +22,9 @@ const Category = ({ navigation }) => {
           {/* <Header title="Dev Mobile"/> */}
           <Text style={styles.title}>Categorias</Text>
           <View style={styles.buttons}>
-            {categories.map((c) => (
-              <Button onClick={changeName} key={c.id} label={c.category}></Button>
-              // <Button onClick={() => navigation.navigate('Quizz')} key={c.id} label={c.category}></Button>
+            {categories.map((category) => (
+              // <Button onClick={changeName} key={category.id} label={category.category}></Button>
+              <Button onClick={() => navigation.navigate('Quizz', {categoryId: category.id})} key={category.id} label={category.category}></Button>
             ))}
           </View>
       </SafeAreaView>
@@ -46,4 +45,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Category;
+export default Category
