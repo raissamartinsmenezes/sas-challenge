@@ -1,18 +1,11 @@
-import React, { useEffect, useState } from 'react' 
-import { useSelector, useDispatch } from 'react-redux'
-import { StyleSheet, Text, View, SafeAreaView, StatusBar, Dimensions } from 'react-native'
+import React from 'react'; 
+import { useSelector } from 'react-redux';
+import { StyleSheet, Text, View, SafeAreaView, StatusBar, Dimensions } from 'react-native';
 
-// import Header from '../components/Header'
-import Button from '../components/Button'
-
-import { resetAnswersList } from "../store/slices/answersSlice";
+import Button from '../components/Button';
 
 const Category = ({ navigation }) => {
-  const categories = useSelector(state => state.categories)
-  const answers = useSelector((state) => state.answers);
-  const dispatch = useDispatch();
-
-  dispatch(resetAnswersList())
+  const categories = useSelector(state => state.categories);
 
   return (
       <SafeAreaView>
@@ -48,4 +41,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Category
+export default Category;
