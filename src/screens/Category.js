@@ -5,26 +5,29 @@ import { StyleSheet, Text, View, SafeAreaView, StatusBar, Dimensions } from 'rea
 // import Header from '../components/Header'
 import Button from '../components/Button'
 
-import { changeFirstCategoryName } from '../store/slices/categoriesSlice'
+import { resetAnswersList } from "../store/slices/answersSlice";
 
 const Category = ({ navigation }) => {
   const categories = useSelector(state => state.categories)
-  const dispatch = useDispatch()
+  const answers = useSelector((state) => state.answers);
+  const dispatch = useDispatch();
 
-  const changeName = () => {
-    alert(JSON.stringify(changeFirstCategoryName('apple')))
-    dispatch(changeFirstCategoryName('apple'))
-  }
+  dispatch(resetAnswersList())
 
   return (
       <SafeAreaView>
           <StatusBar translucent barStyle="dark-content"/>
-          {/* <Header title="Dev Mobile"/> */}
           <Text style={styles.title}>Categorias</Text>
           <View style={styles.buttons}>
             {categories.map((category) => (
-              // <Button onClick={changeName} key={category.id} label={category.category}></Button>
-              <Button onClick={() => navigation.navigate('Quizz', {categoryId: category.id})} key={category.id} label={category.category}></Button>
+              <Button 
+                onClick={() => navigation.navigate('Quizz', {categoryId: category.id})} 
+                key={category.id} 
+                label={category.category}
+                backgroundColor='#fff' 
+                textColor='#78809A'
+                borderWidth={1}
+              />
             ))}
           </View>
       </SafeAreaView>
