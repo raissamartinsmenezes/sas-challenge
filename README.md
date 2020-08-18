@@ -83,7 +83,7 @@ The user can close the result and return to the initial screen where the list of
   }
 ```
 
-## Prototype
+## Assets
 
 - [Layout and Assets](https://www.figma.com/proto/ElMZtMsMUZ5Yku7AEFDkuF/Teste-T%C3%A9cnico-Dev-Mobile-SAS)
 - [Prototype](https://www.figma.com/file/ElMZtMsMUZ5Yku7AEFDkuF/Teste-T%C3%A9cnico---Dev-Mobile-SAS?node-id=0%3A1)
