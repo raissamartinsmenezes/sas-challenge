@@ -1,28 +1,14 @@
 import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { BackHandler } from 'react-native'; 
 
 import Category from './src/screens/Category';
 import Quizz from './src/screens/Quizz';
 import Result from './src/screens/Result';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator()
 
 const App = () => {
-
-  // botao voltar desabilitado em quizz e result screen > mover para as outras telas 
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', () => {
-      return true
-    }) 
-    
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', () => {
-        return true
-      })
-    }
-  }, [])
 
   return (
     <NavigationContainer>
