@@ -6,18 +6,18 @@ const ResultPerLevel = (props) => {
     <View style={styles.container}>
       <View style={styles.box}>
         <Text style={styles.label}>Fácil</Text>
-        <Text style={styles.text}>Acertos: 1</Text>
-        <Text style={styles.text}>Erros: 2</Text>
+        <Text style={styles.text}>Acertos: {props.totalEasyHits}</Text>
+        <Text style={styles.text}>Erros: {props.totalEasyError}</Text>
       </View>
       <View style={styles.box}>
         <Text style={styles.label}>Médio</Text>
-        <Text style={styles.text}>Acertos: 1</Text>
-        <Text style={styles.text}>Erros: 2</Text>
+        <Text style={styles.text}>Acertos: {props.totalMediumHits}</Text>
+        <Text style={styles.text}>Erros: {props.totalMediumError}</Text>
       </View>
       <View style={styles.box}>
         <Text style={styles.label}>Difícil</Text>
-        <Text style={styles.text}>Acertos: 1</Text>
-        <Text style={styles.text}>Erros: 2</Text>
+        <Text style={styles.text}>Acertos: {props.totalHardHits}</Text>
+        <Text style={styles.text}>Erros: {props.totalHardError}</Text>
       </View>
     </View>
   );
