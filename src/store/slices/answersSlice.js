@@ -4,11 +4,20 @@ const answersSlice = createSlice({
     name: 'answers',
     initialState: [],
     reducers: {
-        addAnswer: (state, action) => {
+        addQuestionToAnswersList: (state, action) => {
             state.push(action.payload)
         },
+        resetAnswersList: (state) => {
+            state = []
+        }
     }
 });
 
-export const { addAnswer } = answersSlice.actions
+// adicionar reset lista de respostas
+export const { 
+    addQuestionToAnswersList,
+    resetAnswersList
+} = answersSlice.actions
+
 export default answersSlice.reducer
+
