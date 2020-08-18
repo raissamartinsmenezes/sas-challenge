@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, ScrollView, Text } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
 import Button from "../components/Button";
 import NumberQuestion from "../components/NumberQuestion";
 import Question from "../components/Question";
 import Level from "../components/Level";
-import Answer from "../components/Answer";
 
-// import { addAnswer } from '../store/slices/answersSlice'
-import { addQuestion } from "../store/slices/questionSlice";
+import { fetchQuestions, resetQuestions } from "../store/slices/questionsSlice";
+import { addQuestionToAnswersList } from "../store/slices/answersSlice";
 
 const usedQuestionsIds = [];
-const getQuestionByDifficulty = (questions, difficulty = "medium") => {
+const getNextQuestion = (questions, difficulty = "medium") => {
   const questionFiltered = questions.find(
     (question) =>
       question.difficulty === difficulty &&
@@ -20,7 +19,6 @@ const getQuestionByDifficulty = (questions, difficulty = "medium") => {
   );
 
   if(questionFiltered === undefined) {
-    //  faltou questoes
     alert(" there are no questions available anymore for this criteria")
     return undefined;
   }
@@ -29,48 +27,74 @@ const getQuestionByDifficulty = (questions, difficulty = "medium") => {
   return questionFiltered;
 };
 
-const getNextQuestion = (questions) => {
-  // aqui vai ter uma logica pra definir a prox questao
-  return getQuestionByDifficulty(questions);
-};
-
 const MAX_QUESTIONS = 10;
 
+const getNextDifficulty = (currentQuestion, lastAnsweredQuestion) => {
+  if(!lastAnsweredQuestion) {
+    return 'medium'
+  }
+ 
+  const questionsHaveSameDifficulty = currentQuestion.difficulty === lastAnsweredQuestion.difficulty
+  if (currentQuestion.correct) {
+    if (questionsHaveSameDifficulty && lastAnsweredQuestion.correct) {
+      // incrementDifficulty()
+      return 'hard'
+    }
+  } else {
+    if (questionsHaveSameDifficulty && !lastAnsweredQuestion.correct) {
+      // decrementDifficulty()
+      return 'easy'
+    }
+  }
+}
+
 const Quizz = ({ route, navigation }) => {
-  // 1. category id
   const { categoryId } = route.params;
   const id = JSON.stringify(categoryId);
 
-  // 2. getQuestions by id - API
-
-  const questions = useSelector((state) => state.questions);
+  const dispatch = useDispatch();
+  const questions = useSelector((state) => state.questions.list);
   const [currentQuestion, setCurrentQuestion] = useState();
+  const [lastAnsweredQuestion, setLastAnsweredQuestion] = useState(); 
   const [isCurrentAnswerCorrect, setIsCurrentAnswerCorrect] = useState();
   const [questionIndex, setQuestionIndex] = useState(1);
-  // const dispatch = useDispatch();
 
   useEffect(() => {
-    if (questions) {
+    if(id) {
+      dispatch(fetchQuestions(id))
+    }
+  }, [dispatch, id])
+
+  useEffect(() => {
+    if (questions.length > 0) {
       const initialQuestion = getNextQuestion(questions);
       setCurrentQuestion(initialQuestion);
     }
   }, [questions]);
 
   const onQuestionAnswered = () => {
-    //  checar se a resposta esta correta
-    const result = isCurrentAnswerCorrect === true ? "acertou" : " errou";
-    // apresetnar feedback pro usuario
-    alert("Voce " + result + " mizeravi!!!");
-    // checa se chegamos na ultima pergunta
+    const result = isCurrentAnswerCorrect === true ? "acertou" : "errou";
+    alert("Você " + result);
+    
+    const questionAnswered = {
+      difficulty: currentQuestion.difficulty,
+      correct: isCurrentAnswerCorrect,
+      date: new Date().toISOString()   
+    }
+
+    let difficulty = getNextDifficulty(questionAnswered, lastAnsweredQuestion);
+
+    dispatch(addQuestionToAnswersList(questionAnswered));
+
     if (questionIndex === MAX_QUESTIONS) {
-      //  SIM => vai pra resultados
+      dispatch(resetQuestions())
       navigation.navigate("Resultado");
     } else {
-      //  NAO => soma contador, pedir proxima pergunta
-      const nextQuestion = getNextQuestion(questions);
+      const nextQuestion = getNextQuestion(questions, difficulty);
       setCurrentQuestion(nextQuestion);
+      setLastAnsweredQuestion(questionAnswered);
       setIsCurrentAnswerCorrect(undefined);
-      // adicionar currentQuestion + isCorrect + new Date() timestamp da hora que respondeu no records
+
       setQuestionIndex(questionIndex + 1);
     }
   };
@@ -97,7 +121,13 @@ const Quizz = ({ route, navigation }) => {
         onSelectAnswer={setIsCurrentAnswerCorrect}
       />
       <View style={styles.footer}>
-        <Button onClick={onQuestionAnswered} label="Responder" />
+        <Button 
+          onClick={onQuestionAnswered} 
+          label="Responder" 
+          backgroundColor='#5A8AE9' 
+          textColor='#fff'
+          borderWidth={0}
+        />
       </View>
     </>
   );
