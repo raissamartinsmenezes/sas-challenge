@@ -11,12 +11,11 @@ const Question = ({ question, onSelectAnswer }) => {
       <ScrollView>
         {answers.map((answer) => (
           <Answer
+            key={answer.id}
             answer={answer}
             isSelected={selectedAnswer === answer}
             onClick={() => {
-              // set answer for inner state purposes
               setSelectedAnswer(answer);
-              // call parent component's callback
               const isCorrectAnswer = correctAnswer === answer;
               onSelectAnswer(isCorrectAnswer);
             }}
