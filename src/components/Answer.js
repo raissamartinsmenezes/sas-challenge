@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, TouchableHighlight, Text, Dimensions } from "react-native";
+import { TouchableHighlight, Text, Dimensions } from "react-native";
 
 const Answer = ({ onClick, answer, isSelected }) => {
   return (
@@ -22,7 +22,7 @@ const getButtonStyles = (isSelected) =>
     borderRadius: 8,
     shadowColor: "#000",
     borderWidth: isSelected ? 2 : 0,
-    borderColor: isSelected ? "blue" : "none",
+    borderColor: isSelected ? '#78809A' : "transparent",
     shadowOffset: {
       width: 0,
       height: 1,
