@@ -10,12 +10,7 @@ const categoriesSlice = createSlice({
         { id: 24, category: 'Politica' },
         { id: 9, category: 'Conhecimentos gerais' },
     ],
-    reducers: {
-        changeFirstCategoryName: (state, action) => {
-            state[0].category = action.payload
-        },
-    }
+    reducers: {}
 });
 
-export const { changeFirstCategoryName } = categoriesSlice.actions
 export default categoriesSlice.reducer
