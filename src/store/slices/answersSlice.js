@@ -8,12 +8,11 @@ const answersSlice = createSlice({
             state.push(action.payload)
         },
         resetAnswersList: (state) => {
-            state = []
+            state.length = 0
         }
     }
 });
 
-// adicionar reset lista de respostas
 export const { 
     addQuestionToAnswersList,
     resetAnswersList
