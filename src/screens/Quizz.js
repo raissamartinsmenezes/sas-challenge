@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
+import { BackHandler } from 'react-native';
 
 import Button from "../components/Button";
 import NumberQuestion from "../components/NumberQuestion";
@@ -10,7 +11,9 @@ import Level from "../components/Level";
 import { fetchQuestions, resetQuestions } from "../store/slices/questionsSlice";
 import { addQuestionToAnswersList } from "../store/slices/answersSlice";
 
+const MAX_AMOUNT_OF_QUESTIONS = 10;
 const usedQuestionsIds = [];
+
 const getNextQuestion = (questions, difficulty = "medium") => {
   const questionFiltered = questions.find(
     (question) =>
@@ -19,34 +22,30 @@ const getNextQuestion = (questions, difficulty = "medium") => {
   );
 
   if(questionFiltered === undefined) {
-    alert(" there are no questions available anymore for this criteria")
+    alert(" there are no questions available anymore for this criteria");
     return undefined;
-  }
+  };
 
   usedQuestionsIds.push(questionFiltered.id);
   return questionFiltered;
-};
-
-const MAX_QUESTIONS = 10;
+}
 
 const getNextDifficulty = (currentQuestion, lastAnsweredQuestion) => {
   if(!lastAnsweredQuestion) {
     return 'medium'
-  }
+  };
  
   const questionsHaveSameDifficulty = currentQuestion.difficulty === lastAnsweredQuestion.difficulty
   if (currentQuestion.correct) {
     if (questionsHaveSameDifficulty && lastAnsweredQuestion.correct) {
-      // incrementDifficulty()
       return 'hard'
     }
   } else {
     if (questionsHaveSameDifficulty && !lastAnsweredQuestion.correct) {
-      // decrementDifficulty()
       return 'easy'
     }
-  }
-}
+  };
+};
 
 const Quizz = ({ route, navigation }) => {
   const { categoryId } = route.params;
@@ -60,10 +59,22 @@ const Quizz = ({ route, navigation }) => {
   const [questionIndex, setQuestionIndex] = useState(1);
 
   useEffect(() => {
-    if(id) {
-      dispatch(fetchQuestions(id))
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      return true
+    });
+    
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', () => {
+        return true
+      });
     }
-  }, [dispatch, id])
+  }, []);
+
+  useEffect(() => {
+    if(id) {
+      dispatch(fetchQuestions(id));
+    }
+  }, [dispatch, id]);
 
   useEffect(() => {
     if (questions.length > 0) {
@@ -78,6 +89,7 @@ const Quizz = ({ route, navigation }) => {
     
     const questionAnswered = {
       difficulty: currentQuestion.difficulty,
+      description: currentQuestion.description,
       correct: isCurrentAnswerCorrect,
       date: new Date().toISOString()   
     }
@@ -86,7 +98,7 @@ const Quizz = ({ route, navigation }) => {
 
     dispatch(addQuestionToAnswersList(questionAnswered));
 
-    if (questionIndex === MAX_QUESTIONS) {
+    if (questionIndex === MAX_AMOUNT_OF_QUESTIONS) {
       dispatch(resetQuestions())
       navigation.navigate("Resultado");
     } else {
@@ -94,7 +106,6 @@ const Quizz = ({ route, navigation }) => {
       setCurrentQuestion(nextQuestion);
       setLastAnsweredQuestion(questionAnswered);
       setIsCurrentAnswerCorrect(undefined);
-
       setQuestionIndex(questionIndex + 1);
     }
   };
@@ -115,7 +126,6 @@ const Quizz = ({ route, navigation }) => {
         <NumberQuestion number={questionIndex} />
         <Level level={currentQuestion.difficulty} />
       </View>
-
       <Question
         question={currentQuestion}
         onSelectAnswer={setIsCurrentAnswerCorrect}
